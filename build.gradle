@@ -16,6 +16,7 @@ java {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -31,6 +32,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     testImplementation 'org.springframework.boot:spring-boot-starter-websocket-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+
+
+    // local publish library adding dependency
+    implementation 'org.example:UberProject-EntityService:0.0.7-SNAPSHOT'
+
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:5.0.0")
 }
 
 tasks.named('test') {
