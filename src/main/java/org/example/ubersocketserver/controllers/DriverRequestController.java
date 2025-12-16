@@ -6,6 +6,8 @@ import org.example.ubersocketserver.dto.RideRequestDto;
 import org.example.ubersocketserver.dto.RideResponseDto;
 //import org.example.ubersocketserver.dto.UpdateBookingRequestDto;
 //import org.example.ubersocketserver.dto.UpdateBookingResponseDto;
+import org.example.ubersocketserver.dto.UpdateBookingRequestDto;
+import org.example.ubersocketserver.dto.UpdateBookingResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -53,16 +55,16 @@ public class DriverRequestController {
         simpMessagingTemplate.convertAndSend("/topic/rideRequest", requestDto);
     }
 
-//    @MessageMapping("/rideResponse/{userId}")
-//    public synchronized void rideResponseHandler(@DestinationVariable String userId, RideResponseDto rideResponseDto) {
-//
-//        System.out.println(rideResponseDto.getResponse() +" "+userId);
-//        UpdateBookingRequestDto requestDto = UpdateBookingRequestDto.builder()
-//                .driverId(Optional.of(Long.parseLong(userId)))
-//                .status("SCHEDULED")
-//                .build();
-//        ResponseEntity<UpdateBookingResponseDto> result = this.restTemplate.postForEntity("http://localhost:8001/api/v1/booking/" + rideResponseDto.bookingId, requestDto, UpdateBookingResponseDto.class);
+    @MessageMapping("/rideResponse/{userId}")
+    public synchronized void rideResponseHandler(@DestinationVariable String userId, RideResponseDto rideResponseDto) {
+
+        System.out.println(rideResponseDto.getResponse() +" "+userId);
+        UpdateBookingRequestDto requestDto = UpdateBookingRequestDto.builder()
+                .driverId(Optional.of(Long.parseLong(userId)))
+                .status("SCHEDULED")
+                .build();
+        ResponseEntity<UpdateBookingResponseDto> result = this.restTemplate.postForEntity("http://localhost:7778/api/v1/booking/" + rideResponseDto.bookingId, requestDto, UpdateBookingResponseDto.class);
 //        kafkaProducerService.publishMessage("sample-topic", "Hello");
-//        System.out.println(result.getStatusCode());
-//    }
+        System.out.println(result.getStatusCode());
+    }
 }

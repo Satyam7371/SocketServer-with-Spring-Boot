@@ -32,25 +32,36 @@
         connect();
     })
     function connect() {
-        const socket = new SockJS("http://localhost:8080/ws")
+        const socket = new SockJS("http://localhost:7779/ws")
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function () {
             console.log("connected");
             stompClient.subscribe("/topic/ping", function(message) {
                 console.log("received a new message from server", message);
             })
+
             stompClient.subscribe("/topic/scheduled", function(message) {
                 console.log("received a new scheduled message from server", message);
                 const li = document.createElement("li");
                 li.textContent = message.body;
                 document.getElementById("list").appendChild(li);
             })
+
             stompClient.subscribe("/topic/message/123", function (data) {
                 const msg = JSON.parse(data.body);
                 console.log(typeof msg)
                 const li = document.createElement("li");
                 li.textContent = `${msg.name} : ${msg.timeStamp} - ${msg.message}` ;
                 document.getElementById("list").appendChild(li);
+            })
+
+            stompClient.subscribe("/topic/rideRequest", function (data) {
+                const bookingId = JSON.parse(data.body).bookingId;
+                const response = confirm(`You have a new ride request from passenger: ${JSON.parse(data.body).passengerId}. Do you accept it?`);
+                if(response == true) {
+                    const id = prompt("Please enter your driverId");
+                    stompClient.send(`/app/rideResponse/${id}`, {}, JSON.stringify({response, bookingId}));
+                }
             })
         })
     }
