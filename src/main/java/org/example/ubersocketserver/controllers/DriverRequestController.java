@@ -1,7 +1,7 @@
 package org.example.ubersocketserver.controllers;
 
 
-//import org.example.ubersocketserver.Producers.KafkaProducerService;
+import org.example.ubersocketserver.producers.KafkaProducerService;
 import org.example.ubersocketserver.dto.RideRequestDto;
 import org.example.ubersocketserver.dto.RideResponseDto;
 //import org.example.ubersocketserver.dto.UpdateBookingRequestDto;
@@ -25,20 +25,20 @@ public class DriverRequestController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final RestTemplate restTemplate;
 
-//    private final KafkaProducerService kafkaProducerService;
+    private final KafkaProducerService kafkaProducerService;
 
 
-    public DriverRequestController(SimpMessagingTemplate simpMessagingTemplate) {
+    public DriverRequestController(SimpMessagingTemplate simpMessagingTemplate, KafkaProducerService kafkaProducerService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.restTemplate = new RestTemplate();
-//        this.kafkaProducerService = kafkaProducerService;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
-//    @GetMapping
-//    public Boolean help() {
-//        kafkaProducerService.publishMessage("sample-topic", "Hello");
-//        return true;
-//    }
+    @GetMapping
+    public Boolean help() {
+        kafkaProducerService.publishMessage("sample-topic", "Hello");
+        return true;
+    }
 
     @PostMapping ("/newride")
     @CrossOrigin(originPatterns = "*")
