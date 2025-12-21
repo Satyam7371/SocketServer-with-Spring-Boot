@@ -64,7 +64,7 @@ public class DriverRequestController {
                 .status("SCHEDULED")
                 .build();
         ResponseEntity<UpdateBookingResponseDto> result = this.restTemplate.postForEntity("http://localhost:7778/api/v1/booking/" + rideResponseDto.bookingId, requestDto, UpdateBookingResponseDto.class);
-//        kafkaProducerService.publishMessage("sample-topic", "Hello");
+        kafkaProducerService.publishMessage("sample-topic", "Hello");
         System.out.println(result.getStatusCode());
     }
 }
